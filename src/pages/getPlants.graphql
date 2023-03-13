@@ -1,0 +1,8 @@
+query getPlants {
+    plants {
+        id
+        name
+        lastWatered
+        waterFrequency
+    }
+}
