@@ -1,4 +1,4 @@
-query getPlants {
+query plants {
     plants {
         id
         name
