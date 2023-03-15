@@ -23,6 +23,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import React from "react";
 import { ImDroplet } from "react-icons/im";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 export const PlantItem = ({ plant }: { plant: Plant }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,6 +31,8 @@ export const PlantItem = ({ plant }: { plant: Plant }) => {
     refetchQueries: [PlantsDocument],
   });
   const [blue400] = useToken("colors", ["blue.400"]);
+
+  const navigate = useNavigate();
 
   const lastWaterdText = plant.lastWatered
     ? moment(plant.lastWatered).fromNow()
@@ -66,7 +69,13 @@ export const PlantItem = ({ plant }: { plant: Plant }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Box shadow="base" bgColor="gray.50" borderRadius="lg" overflow="hidden">
+      <Box
+        shadow="base"
+        bgColor="gray.50"
+        borderRadius="lg"
+        overflow="hidden"
+        onClick={() => navigate(`/plant/${plant.id}`)}
+      >
         <Stack direction="row" alignItems="center" justifyContent="end" m={4}>
           <Text fontSize="md" mr="auto">
             {plant.name}
