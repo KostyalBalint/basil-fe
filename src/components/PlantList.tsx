@@ -1,9 +1,8 @@
-import { Box, Container, Grid, Stack, Text } from "@chakra-ui/react";
 import { usePlantsQuery } from "../generated/graphql";
-import { PlantItem } from "../components/PlantItem";
-import { AddPlant } from "../components/AddPlant";
+import { Box, Grid, Text } from "@chakra-ui/react";
+import { PlantItem } from "./PlantItem";
 
-const PlantList = () => {
+export const PlantList = () => {
   const plants = usePlantsQuery({
     fetchPolicy: "network-only",
   });
@@ -25,21 +24,5 @@ const PlantList = () => {
         ))}
       </Grid>
     </>
-  );
-};
-
-export const PlantPage = () => {
-  return (
-    <Container height="100vh" overflow="hidden">
-      <Stack height="100%" padding={3}>
-        <Text fontSize="lg" textAlign="center">
-          316 Plant Tracker
-        </Text>
-        <Box>
-          <PlantList />
-        </Box>
-        <AddPlant />
-      </Stack>
-    </Container>
   );
 };

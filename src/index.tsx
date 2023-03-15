@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,11 +20,13 @@ const client = new ApolloClient({
 
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
-    </ApolloProvider>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </ApolloProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

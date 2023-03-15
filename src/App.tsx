@@ -1,9 +1,14 @@
 import React from "react";
 import "./App.css";
-import { PlantPage } from "./pages/Plant";
+import { PlantListPage } from "./pages/PlantList";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
-  return <PlantPage />;
+  return (
+    <Routes>
+      <Route path="/" element={<PlantListPage />} />
+    </Routes>
+  );
 }
 
 export default App;
