@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
   PlantDocument,
+  PlantsDocument,
+  useEditPlantMutation,
   usePlantQuery,
   useWaterPlantMutation,
 } from "../generated/graphql";
@@ -11,32 +13,17 @@ import {
   IconButton,
   Stack,
   Text,
+  useDisclosure,
   useToken,
 } from "@chakra-ui/react";
 import moment from "moment";
 import GaugeChart from "react-gauge-chart";
 import { ImDroplet } from "react-icons/im";
 import { FaWrench } from "react-icons/fa";
-import React from "react";
+import React, { useState } from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-
-function TextLine(props: { label: string; value: string }) {
-  return (
-    <Box display="flex" alignItems="baseline">
-      {props.label}
-      <Box
-        color="gray.500"
-        fontWeight="semibold"
-        letterSpacing="wide"
-        fontSize="xs"
-        textTransform="uppercase"
-        ml="2"
-      >
-        {props.value}
-      </Box>
-    </Box>
-  );
-}
+import { TextLine } from "../components/TextLine";
+import { PlantModal } from "../components/PlantModal";
 
 export const PlantPage = () => {
   const { id } = useParams();
@@ -46,6 +33,18 @@ export const PlantPage = () => {
     variables: {
       id: id,
     },
+    onCompleted: (data) => {
+      setName(data.plant?.name ?? "");
+      setWaterFrequency(data.plant?.waterFrequency ?? 0);
+    },
+  });
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [name, setName] = useState<string | null>(null);
+  const [waterFrequency, setWaterFrequency] = useState<number | null>(null);
+
+  const [editPlant] = useEditPlantMutation({
+    refetchQueries: [PlantsDocument],
   });
 
   const navigate = useNavigate();
@@ -102,6 +101,9 @@ export const PlantPage = () => {
                     icon={<FaWrench />}
                     aria-label="Edit"
                     variant="outline"
+                    onClick={() => {
+                      onOpen();
+                    }}
                   />
                 </Stack>
                 <Stack gap={2} alignItems="center">
@@ -157,6 +159,31 @@ export const PlantPage = () => {
           Back
         </Button>
       </Stack>
+      <PlantModal
+        headerText="Edit Plant"
+        open={isOpen}
+        onClose={onClose}
+        name={plant.data?.plant?.name ?? ""}
+        onChangeName={(e) => setName(e.target.value)}
+        waterFrequency={plant.data?.plant?.waterFrequency ?? 0}
+        onChangeWatering={(e) => setWaterFrequency(Number(e.target.value))}
+        onSubmit={async () => {
+          console.log(name, waterFrequency);
+          if (name && waterFrequency) {
+            await editPlant({
+              variables: {
+                id: id ?? "",
+                plant: {
+                  name: name,
+                  waterFrequency: waterFrequency,
+                },
+              },
+            });
+            onClose();
+          }
+        }}
+        submitText="Edit"
+      />
     </Container>
   );
 };

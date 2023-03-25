@@ -19,12 +19,19 @@ export type Scalars = {
 export type Mutation = {
   __typename: 'Mutation';
   addPlant: Plant;
+  editPlant: Plant;
   removePlant: Plant;
   waterPlant?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type MutationAddPlantArgs = {
+  plant?: InputMaybe<PlantInput>;
+};
+
+
+export type MutationEditPlantArgs = {
+  id?: InputMaybe<Scalars['ID']>;
   plant?: InputMaybe<PlantInput>;
 };
 
@@ -69,6 +76,14 @@ export type AddPlantMutationVariables = Exact<{
 
 
 export type AddPlantMutation = { __typename: 'Mutation', addPlant: { __typename: 'Plant', id: string, name: string } };
+
+export type EditPlantMutationVariables = Exact<{
+  id: Scalars['ID'];
+  plant: PlantInput;
+}>;
+
+
+export type EditPlantMutation = { __typename: 'Mutation', editPlant: { __typename: 'Plant', id: string, name: string, lastWatered?: any | null, waterFrequency: number } };
 
 export type PlantQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -132,6 +147,43 @@ export function useAddPlantMutation(baseOptions?: Apollo.MutationHookOptions<Add
 export type AddPlantMutationHookResult = ReturnType<typeof useAddPlantMutation>;
 export type AddPlantMutationResult = Apollo.MutationResult<AddPlantMutation>;
 export type AddPlantMutationOptions = Apollo.BaseMutationOptions<AddPlantMutation, AddPlantMutationVariables>;
+export const EditPlantDocument = gql`
+    mutation editPlant($id: ID!, $plant: PlantInput!) {
+  editPlant(id: $id, plant: $plant) {
+    id
+    name
+    lastWatered
+    waterFrequency
+  }
+}
+    `;
+export type EditPlantMutationFn = Apollo.MutationFunction<EditPlantMutation, EditPlantMutationVariables>;
+
+/**
+ * __useEditPlantMutation__
+ *
+ * To run a mutation, you first call `useEditPlantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditPlantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editPlantMutation, { data, loading, error }] = useEditPlantMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      plant: // value for 'plant'
+ *   },
+ * });
+ */
+export function useEditPlantMutation(baseOptions?: Apollo.MutationHookOptions<EditPlantMutation, EditPlantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditPlantMutation, EditPlantMutationVariables>(EditPlantDocument, options);
+      }
+export type EditPlantMutationHookResult = ReturnType<typeof useEditPlantMutation>;
+export type EditPlantMutationResult = Apollo.MutationResult<EditPlantMutation>;
+export type EditPlantMutationOptions = Apollo.BaseMutationOptions<EditPlantMutation, EditPlantMutationVariables>;
 export const PlantDocument = gql`
     query plant($id: ID) {
   plant(id: $id) {
