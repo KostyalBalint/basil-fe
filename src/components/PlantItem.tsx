@@ -84,7 +84,14 @@ export const PlantItem = ({ plant }: { plant: Plant }) => {
             <Text fontSize="md">{lastWaterdText}</Text>
             <ImDroplet color={blue400} />
           </Stack>
-          <Icon as={DeleteIcon} color="red.400" onClick={onOpen} />
+          <Icon
+            as={DeleteIcon}
+            color="red.400"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen();
+            }}
+          />
         </Stack>
       </Box>
     </>
