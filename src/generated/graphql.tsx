@@ -89,6 +89,13 @@ export type RemovePlantMutationVariables = Exact<{
 
 export type RemovePlantMutation = { __typename: 'Mutation', removePlant: { __typename: 'Plant', id: string, name: string } };
 
+export type WaterPlantMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type WaterPlantMutation = { __typename: 'Mutation', waterPlant?: boolean | null };
+
 
 export const AddPlantDocument = gql`
     mutation addPlant($name: String!, $waterFrequency: Int!) {
@@ -234,3 +241,34 @@ export function useRemovePlantMutation(baseOptions?: Apollo.MutationHookOptions<
 export type RemovePlantMutationHookResult = ReturnType<typeof useRemovePlantMutation>;
 export type RemovePlantMutationResult = Apollo.MutationResult<RemovePlantMutation>;
 export type RemovePlantMutationOptions = Apollo.BaseMutationOptions<RemovePlantMutation, RemovePlantMutationVariables>;
+export const WaterPlantDocument = gql`
+    mutation waterPlant($id: ID!) {
+  waterPlant(id: $id)
+}
+    `;
+export type WaterPlantMutationFn = Apollo.MutationFunction<WaterPlantMutation, WaterPlantMutationVariables>;
+
+/**
+ * __useWaterPlantMutation__
+ *
+ * To run a mutation, you first call `useWaterPlantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWaterPlantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [waterPlantMutation, { data, loading, error }] = useWaterPlantMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useWaterPlantMutation(baseOptions?: Apollo.MutationHookOptions<WaterPlantMutation, WaterPlantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<WaterPlantMutation, WaterPlantMutationVariables>(WaterPlantDocument, options);
+      }
+export type WaterPlantMutationHookResult = ReturnType<typeof useWaterPlantMutation>;
+export type WaterPlantMutationResult = Apollo.MutationResult<WaterPlantMutation>;
+export type WaterPlantMutationOptions = Apollo.BaseMutationOptions<WaterPlantMutation, WaterPlantMutationVariables>;
