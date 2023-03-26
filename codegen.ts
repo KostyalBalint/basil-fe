@@ -1,12 +1,11 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 import * as dotenv from "dotenv";
+import Config from "./public/config.json";
 dotenv.config();
-
-const CODEGEN_GRAPHQL_SCHEMA_URL = process.env.REACT_APP_GRAPHQL_ENDPOINT;
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: CODEGEN_GRAPHQL_SCHEMA_URL,
+  schema: Config.REACT_APP_GRAPHQL_ENDPOINT,
   debug: true,
   verbose: true,
   documents: "src/**/*.graphql",

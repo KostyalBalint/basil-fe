@@ -6,15 +6,16 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { BrowserRouter } from "react-router-dom";
+import { env } from "./utils/env";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
+console.log(env.REACT_APP_GRAPHQL_ENDPOINT);
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT ?? "",
+  uri: env.REACT_APP_GRAPHQL_ENDPOINT ?? "",
   cache: new InMemoryCache(),
 });
 
